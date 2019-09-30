@@ -14,7 +14,7 @@ router = routing.Router()
 @router.register("issues", action="opened")
 async def issue_opened_event(event, gh, *args, **kwargs):
     """ Whenever an issue is opened, greet the author and say thanks."""
-    print(f"Event: {json.dumps(event)}")
+    print(f"Event: {json.dumps(event.data)}")
     url = event.data["issue"]["comments_url"]
     author = event.data["issue"]["user"]["login"]
 
@@ -46,6 +46,10 @@ async def main(request):
 
 
 if __name__ == "__main__":
+    event = { "name": "Rajesh" }
+    print (f"{json.dumps(event)}")
+    if True: exit(0)
+
     app = web.Application()
     app.add_routes(routes)
     port = os.environ.get("PORT")
