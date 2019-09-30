@@ -46,10 +46,6 @@ async def main(request):
 
 
 if __name__ == "__main__":
-    event = { "name": "Rajesh" }
-    print (f"{json.dumps(event)}")
-    if True: exit(0)
-
     app = web.Application()
     app.add_routes(routes)
     port = os.environ.get("PORT")
