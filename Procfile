@@ -1,1 +1,1 @@
-python3 -m gitbot
+web: python3 -m gitbot
