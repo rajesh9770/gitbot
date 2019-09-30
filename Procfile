@@ -1,1 +1,1 @@
-python3 -m webservice
+python3 -m gitbot
