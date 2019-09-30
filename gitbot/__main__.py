@@ -22,6 +22,19 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     await gh.post(url, data={"body": message})
     pass
 
+
+@router.register("issue_comment", action="created")
+async def issue_comment_created_event(event, gh, *args, **kwargs):
+    """ Whenever an issue gets comment, say thanks."""
+    print(f"issue_comment Event: {json.dumps(event.data)}")
+    url = event.data["issue"]["comments_url"]
+    author = event.data["comment"]["user"]["login"]
+    comment = event.data["comment"]["body"]
+
+    message = f"Thanks for the report @{author}! Replaying comment {comment} (I'm a bot)."
+    await gh.post(url, data={"body": message})
+    pass
+
 @routes.post("/")
 async def main(request):
     # read the GitHub webhook payload
