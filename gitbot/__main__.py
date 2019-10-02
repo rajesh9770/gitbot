@@ -35,7 +35,7 @@ async def issue_comment_created_event(event, gh, *args, **kwargs):
     print(f'Comment received {message}')
     pass
 
-## https://developer.github.com/v3/activity/events/types/#pullrequestevent
+# https://developer.github.com/v3/activity/events/types/#pullrequestevent
 @router.register("pull_request", action="opened")
 async def pull_request_opened_event(event, gh, *args, **kwargs):
     """ Whenever a pull request is open, say thanks."""
