@@ -35,6 +35,19 @@ async def issue_comment_created_event(event, gh, *args, **kwargs):
     print(f'Comment received {message}')
     pass
 
+## https://developer.github.com/v3/activity/events/types/#pullrequestevent
+@router.register("pull_request", action="opened")
+async def pull_request_opened_event(event, gh, *args, **kwargs):
+    """ Whenever a pull request is open, say thanks."""
+    print(f"pull_request_issue_comment Event: {json.dumps(event.data)}")
+    author = event.data["pull_request"]["user"]["login"]
+    comment = event.data["pull_request"]["body"]
+
+    message = f"Thanks for the report @{author}! Replaying comment {comment} (I'm a bot)."
+    print(f'Comment received {message}')
+    pass
+
+
 @routes.post("/")
 async def main(request):
     # read the GitHub webhook payload
