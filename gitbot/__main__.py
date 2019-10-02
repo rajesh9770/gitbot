@@ -11,6 +11,7 @@ routes = web.RouteTableDef()
 router = routing.Router()
 test=1
 
+
 @router.register("issues", action="opened")
 async def issue_opened_event(event, gh, *args, **kwargs):
     """ Whenever an issue is opened, greet the author and say thanks."""
@@ -22,8 +23,9 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     await gh.post(url, data={"body": message})
     pass
 
+
 #   https://developer.github.com/v3/activity/events/types/#issuecommentevent
-@router.register("issue_comment", action="created")
+@router.register("issue_comment", action="created,edited")
 async def issue_comment_created_event(event, gh, *args, **kwargs):
     """ Whenever an issue gets comment, say thanks."""
     print(f"{test}issue_comment Event: {json.dumps(event.data)}")
@@ -43,7 +45,7 @@ async def pull_request_opened_event(event, gh, *args, **kwargs):
     author = event.data["pull_request"]["user"]["login"]
     comment = event.data["pull_request"]["body"]
 
-    message = f"Thanks for the report @{author}! Replaying comment {comment} (I'm a bot)."
+    message = f"Thanks for the pull request @{author}! Replaying comment {comment} (I'm a bot)."
     print(f'Comment received {message}')
     pass
 
@@ -55,9 +57,10 @@ async def pull_request_edited_event(event, gh, *args, **kwargs):
     author = event.data["pull_request"]["user"]["login"]
     changes = event.data["changes"]["body"]
 
-    message = f"1Thanks for the comment @{author}! Replaying comment {changes} (I'm a bot)."
+    message = f"{test}Thanks for the comment on pull request @{author}! Replaying comment {changes} (I'm a bot)."
     print(f'Comment received {message}')
     pass
+
 
 @routes.post("/")
 async def main(request):
