@@ -39,7 +39,7 @@ async def issue_comment_created_event(event, gh, *args, **kwargs):
 @router.register("pull_request", action="opened")
 async def pull_request_opened_event(event, gh, *args, **kwargs):
     """ Whenever a pull request is open, say thanks."""
-    print(f"pull_request_issue_comment Event: {json.dumps(event.data)}")
+    print(f"pull_request_opened Event: {json.dumps(event.data)}")
     author = event.data["pull_request"]["user"]["login"]
     comment = event.data["pull_request"]["body"]
 
@@ -47,6 +47,17 @@ async def pull_request_opened_event(event, gh, *args, **kwargs):
     print(f'Comment received {message}')
     pass
 
+
+@router.register("pull_request", action="edited")
+async def pull_request_edited_event(event, gh, *args, **kwargs):
+    """ Whenever a pull request is edited, say thanks."""
+    print(f"pull_request_edited Event: {json.dumps(event.data)}")
+    author = event.data["pull_request"]["user"]["login"]
+    changes = event.data["changes"]["body"]
+
+    message = f"Thanks for the report @{author}! Replaying comment {changes} (I'm a bot)."
+    print(f'Comment received {message}')
+    pass
 
 @routes.post("/")
 async def main(request):
