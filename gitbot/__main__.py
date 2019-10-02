@@ -9,12 +9,12 @@ from gidgethub import aiohttp as gh_aiohttp
 
 routes = web.RouteTableDef()
 router = routing.Router()
-
+test=1
 
 @router.register("issues", action="opened")
 async def issue_opened_event(event, gh, *args, **kwargs):
     """ Whenever an issue is opened, greet the author and say thanks."""
-    print(f"Event: {json.dumps(event.data)}")
+    print(f"{test}Event: {json.dumps(event.data)}")
     url = event.data["issue"]["comments_url"]
     author = event.data["issue"]["user"]["login"]
 
@@ -26,7 +26,7 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 @router.register("issue_comment", action="created")
 async def issue_comment_created_event(event, gh, *args, **kwargs):
     """ Whenever an issue gets comment, say thanks."""
-    print(f"issue_comment Event: {json.dumps(event.data)}")
+    print(f"{test}issue_comment Event: {json.dumps(event.data)}")
     #url = event.data["issue"]["comments_url"]
     author = event.data["comment"]["user"]["login"]
     comment = event.data["comment"]["body"]
@@ -39,7 +39,7 @@ async def issue_comment_created_event(event, gh, *args, **kwargs):
 @router.register("pull_request", action="opened")
 async def pull_request_opened_event(event, gh, *args, **kwargs):
     """ Whenever a pull request is open, say thanks."""
-    print(f"pull_request_opened Event: {json.dumps(event.data)}")
+    print(f"{test}pull_request_opened Event: {json.dumps(event.data)}")
     author = event.data["pull_request"]["user"]["login"]
     comment = event.data["pull_request"]["body"]
 
@@ -51,11 +51,11 @@ async def pull_request_opened_event(event, gh, *args, **kwargs):
 @router.register("pull_request", action="edited")
 async def pull_request_edited_event(event, gh, *args, **kwargs):
     """ Whenever a pull request is edited, say thanks."""
-    print(f"pull_request_edited Event: {json.dumps(event.data)}")
+    print(f"{test}pull_request_edited Event: {json.dumps(event.data)}")
     author = event.data["pull_request"]["user"]["login"]
     changes = event.data["changes"]["body"]
 
-    message = f"Thanks for the report @{author}! Replaying comment {changes} (I'm a bot)."
+    message = f"1Thanks for the comment @{author}! Replaying comment {changes} (I'm a bot)."
     print(f'Comment received {message}')
     pass
 
