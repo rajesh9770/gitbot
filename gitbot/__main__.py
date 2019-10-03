@@ -1,6 +1,7 @@
 import os
 import json
 import aiohttp
+import argparse
 
 from aiohttp import web
 
@@ -9,8 +10,16 @@ from gidgethub import aiohttp as gh_aiohttp
 
 routes = web.RouteTableDef()
 router = routing.Router()
-test=1
+test = 1
 
+prefix = '@bot'
+parser = argparse.ArgumentParser()
+parser.add_argument("-h", "--hostname", help="enter the hostname or ip address", type=str)
+parser.add_argument("-p", "--port", help="enter the ssh port for the host", type=int, default=22)
+parser.add_argument("-u", "--username", help="enter the ssh user name to login to the host", type=str, default='maglev')
+parser.add_argument("-P", "--password", help="enter the ssh user password to login to the host", type=str, default='Maglev123')
+#args = parser.parse_args(["--square", "2", "-c", "3"])
+#args = parser.parse_args(cmdLine.split())
 
 @router.register("issues", action="opened")
 async def issue_opened_event(event, gh, *args, **kwargs):
@@ -25,14 +34,18 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 
 
 #   https://developer.github.com/v3/activity/events/types/#issuecommentevent
+#@router.register("issue_comment", action="edited")
 @router.register("issue_comment", action="created")
-@router.register("issue_comment", action="edited")
 async def issue_comment_created_event(event, gh, *args, **kwargs):
     """ Whenever an issue gets comment, say thanks."""
     print(f"{test}issue_comment Event: {json.dumps(event.data)}")
     #url = event.data["issue"]["comments_url"]
     author = event.data["comment"]["user"]["login"]
     comment = event.data["comment"]["body"]
+    for line in comment.splitlines():
+        if line.startswith(prefix):
+            args = parser.parse_args(line[len(prefix):])
+            print (f"args.password {args.password} args.username {args.username} args.port {args.port} args.hostname {args.hostname}")
 
     message = f"Thanks for the report @{author}! Replaying comment {comment} (I'm a bot)."
     print(f'Comment received {message}')
