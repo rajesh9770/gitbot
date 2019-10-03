@@ -25,7 +25,8 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 
 
 #   https://developer.github.com/v3/activity/events/types/#issuecommentevent
-@router.register("issue_comment", action="created,edited")
+@router.register("issue_comment", action="created")
+@router.register("issue_comment", action="edited")
 async def issue_comment_created_event(event, gh, *args, **kwargs):
     """ Whenever an issue gets comment, say thanks."""
     print(f"{test}issue_comment Event: {json.dumps(event.data)}")
